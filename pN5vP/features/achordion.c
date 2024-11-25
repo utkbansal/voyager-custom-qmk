@@ -335,6 +335,12 @@ __attribute__((weak)) bool achordion_chord(uint16_t tap_hold_keycode,
                                            keyrecord_t* tap_hold_record,
                                            uint16_t other_keycode,
                                            keyrecord_t* other_record) {
+
+  // If the tap-hold key is a layer-tap key, consider it held if the other key is on the opposite hand.
+    if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
+        return true;
+    }
+
   return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -342,7 +348,7 @@ __attribute__((weak)) bool achordion_chord(uint16_t tap_hold_keycode,
 __attribute__((weak)) uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
 
   // Don't use the default timeout for the tap-hold key if it's a mod-tap key.
-  if (IS_QK_MOD_TAP(tap_hold_keycode)) return 0;
+  if (IS_QK_LAYER_TAP(tap_hold_keycode)) return 0;
   return 1000;
 }
 
