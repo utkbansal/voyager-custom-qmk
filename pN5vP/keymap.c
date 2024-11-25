@@ -40,12 +40,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-
+void matrix_scan_user(void) {
+  achordion_task();
+}
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
+  // ACHORDION ENTRYPOINT
+  if (!process_achordion(keycode, record)) { return false; }
 
+  switch (keycode) {
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
