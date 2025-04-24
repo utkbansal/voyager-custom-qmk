@@ -54,9 +54,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-
+void matrix_scan_user(void) {
+  achordion_task();
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+  // ACHORDION ENTRYPOINT
+  if (!process_achordion(keycode, record)) { return false; }
+
   switch (keycode) {
     case ST_MACRO_0:
     if (record->event.pressed) {
