@@ -28,7 +28,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, LALT(LCTL(LSFT(KC_S))),LALT(LCTL(LSFT(KC_T))),LALT(LCTL(LSFT(KC_P))),LALT(LCTL(LSFT(KC_F))),KC_TRANSPARENT,                                 KC_TRANSPARENT, LGUI(KC_LBRC),  KC_UP,          RGUI(KC_RBRC),  KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, ST_MACRO_1,     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, LCTL(LSFT(KC_TAB)),KC_TRANSPARENT, LCTL(KC_TAB),   KC_TRANSPARENT, KC_TRANSPARENT, 
-                                                    KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
+                                                    KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, SENTENCE_CASE_TOGGLE
   ),
   [2] = LAYOUT_voyager(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
@@ -58,10 +58,18 @@ void matrix_scan_user(void) {
   achordion_task();
 }
 
+// LED when sentence case is primed.
+void sentence_case_primed(bool primed) {
+  // Change B0 to the pin for the LED to use.
+  writePin(B0, primed);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // ACHORDION ENTRYPOINT
   if (!process_achordion(keycode, record)) { return false; }
+
+  if (!process_sentence_case(keycode, record)) { return false; }
 
   switch (keycode) {
     case ST_MACRO_0:

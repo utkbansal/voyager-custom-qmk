@@ -7,3 +7,4 @@ SPACE_CADET_ENABLE = no
 CAPS_WORD_ENABLE = yes
 
 SRC += features/achordion.c
+SRC += features/sentence_case.c
